@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -18,7 +19,7 @@ public class Client {
 
        //Open the TCP connection
            System.err.println(InetAddress.getLocalHost());
-           Socket clientSocket = new Socket("127.0.0.1",8888);
+           Socket clientSocket = new Socket("127.0.0.1",8000);
 
        //Get the input
            System.out.println("***********************Square and Root Calculator***********************");
@@ -49,16 +50,35 @@ public class Client {
                out.println(jsondata);
                //System.out.println(jsondata);
 
+               //close the connection
+               out.close();
+               clientSocket.close();
+
                //Get the result from the server
-               BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-               JSONObject resultobj = (JSONObject) JSONValue.parse(in.readLine());
+
+
+               ServerSocket serverSocket = new ServerSocket(8010);
+               //System.out.println("SERVER IS LISTING TO PORT : 8010");
+
+               //Accepting the client's request
+
+               Socket clientSocketm = serverSocket.accept();
+               //System.out.println("NOW CLIENT IS CONNECTED. ");
+               BufferedReader incl = new BufferedReader(new InputStreamReader(clientSocketm.getInputStream()));
+               JSONObject resultobj = (JSONObject) JSONValue.parse(incl.readLine());
                //System.out.println(resultobj);
+
+
 
                //Unmartial the results
                String cal = (String) resultobj.get("calculation");
                Double result = (Double) resultobj.get("result");
                //System.out.println(cal);
                //System.out.println(result);
+
+               incl.close();
+               clientSocketm.close();
+
 
                //Print the result
                System.out.println("             The " + cal + " of the number " + num + " is: " + result + "\n");
