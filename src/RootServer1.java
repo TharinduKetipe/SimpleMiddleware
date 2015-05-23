@@ -16,8 +16,8 @@ public class RootServer1 {
 
         //Creating the server Socket
 
-        ServerSocket serverSocket = new ServerSocket(8888);
-        System.out.println("SERVER IS LISTING TO PORT : 8888");
+        ServerSocket serverSocket = new ServerSocket(8091);
+        System.out.println("SERVER IS LISTING TO PORT : 8091");
 
         //Accepting the client's request
 
