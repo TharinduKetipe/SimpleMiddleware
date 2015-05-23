@@ -2,16 +2,11 @@
  * Created by tharindu on 5/23/15.
  */
 import org.json.simple.JSONObject;
-<<<<<<< HEAD
 import org.json.simple.JSONValue;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-=======
-
-import java.io.IOException;
->>>>>>> origin/master
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -36,31 +31,22 @@ public class Client {
 
            if (type == 1 || type == 2){
 
-<<<<<<< HEAD
 
-=======
-               System.out.println("***********************   All rights reserved    ***********************");
->>>>>>> origin/master
+
 
 
                //Converting inputs to json object
 
                JSONObject data = new JSONObject();
-<<<<<<< HEAD
                data.put("number", num);
                data.put("type", type);
                //System.out.println(data);
-=======
-               data.put("number", new Double(num));
-               data.put("type", new Integer(type));
-               System.out.println(data);
->>>>>>> origin/master
+
 
                //Sending the data via tcp socket
                String jsondata = data.toJSONString();
                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
                out.println(jsondata);
-<<<<<<< HEAD
                //System.out.println(jsondata);
 
                //Get the result from the server
@@ -78,9 +64,7 @@ public class Client {
                System.out.println("             The " + cal + " of the number " + num + " is: " + result + "\n");
                System.out.println("***********************   All rights reserved    ***********************");
 
-=======
-               System.out.println(jsondata);
->>>>>>> origin/master
+
 
            }else {
 
