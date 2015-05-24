@@ -14,46 +14,57 @@ public class RootServer1 {
 
     public static void main(String[] args) throws IOException {
 
-        //Creating the server Socket
 
-        ServerSocket serverSocket = new ServerSocket(8091);
-        System.out.println("SERVER IS LISTING TO PORT : 8091");
+        try {
 
-        //Accepting the client's request
+            //Creating the server Socket
 
-        Socket clientSocket = serverSocket.accept();
-        System.out.println("NOW CLIENT IS CONNECTED. ");
+            ServerSocket serverSocket = new ServerSocket(8091);
+            System.out.println("SERVER IS LISTING TO PORT : 8091");
 
-        //Reading the recieved data
+            //Accepting the client's request
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        JSONObject clntObj = (JSONObject) JSONValue.parse(in.readLine());
-        System.out.println(clntObj);
-        //String client = in.readLine();
-        // System.out.println(client);
+            Socket clientSocket = serverSocket.accept();
+            System.out.println("NOW CLIENT IS CONNECTED. ");
 
-        //Unmartial the data
-        Double number = (Double) clntObj.get("number");
-        Long type = (Long) clntObj.get("type");
+            //Reading the recieved data
 
-        //System.out.println(number );
-        //System.out.println(type );
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            JSONObject clntObj = (JSONObject) JSONValue.parse(in.readLine());
+            System.out.println(clntObj);
+            //String client = in.readLine();
+            // System.out.println(client);
 
-        //Calculation
-        Double result = Math.sqrt(number);
+            //Unmartial the data
+            Double number = (Double) clntObj.get("number");
+            Long type = (Long) clntObj.get("type");
 
-        //Martialing
-        JSONObject resultobj = new JSONObject();
-        resultobj.put("calculation", new String("Squareroot"));
-        resultobj.put("result", result);
+            //System.out.println(number );
+            //System.out.println(type );
 
-        //System.out.println(resultobj);
+            //Calculation
+            Double result = Math.sqrt(number);
 
-        //Sending the data to client
-        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
-        String resultdata = resultobj.toJSONString();
-        System.out.println(resultdata);
-        out.println(resultdata);
+            //Martialing
+            JSONObject resultobj = new JSONObject();
+            resultobj.put("calculation", new String("Squareroot"));
+            resultobj.put("result", result);
+
+            //System.out.println(resultobj);
+
+            //Sending the data to client
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
+            String resultdata = resultobj.toJSONString();
+            System.out.println(resultdata);
+            out.println(resultdata);
+
+
+        }catch (IOException e){
+
+            System.out.println(e);
+            System.out.println("Starting the Root server 1 is failed.");
+        }
+
 
 
 

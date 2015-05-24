@@ -17,46 +17,57 @@ public class SquareServer1 {
 
     public static void main(String[] args) throws IOException {
 
-        //Creating the server Socket
+        try{
 
-        ServerSocket serverSocket = new ServerSocket(8081);
-        System.out.println("SERVER IS LISTING TO PORT : 8081");
+            //Creating the server Socket
 
-        //Accepting the client's request
+            ServerSocket serverSocket = new ServerSocket(8081);
+            System.out.println("SERVER IS LISTING TO PORT : 8081");
 
-        Socket clientSocket = serverSocket.accept();
-        System.out.println("NOW CLIENT IS CONNECTED. ");
+            //Accepting the client's request
 
-        //Reading the recieved data
+            Socket clientSocket = serverSocket.accept();
+            System.out.println("NOW CLIENT IS CONNECTED. ");
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        JSONObject clntObj = (JSONObject) JSONValue.parse(in.readLine());
-        System.out.println(clntObj);
-        //String client = in.readLine();
-       // System.out.println(client);
+            //Reading the recieved data
 
-        //Unmartial the data
-        Double number = (Double) clntObj.get("number");
-        Long type = (Long) clntObj.get("type");
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            JSONObject clntObj = (JSONObject) JSONValue.parse(in.readLine());
+            System.out.println(clntObj);
+            //String client = in.readLine();
+            // System.out.println(client);
 
-        //System.out.println(number );
-        //System.out.println(type );
+            //Unmartial the data
+            Double number = (Double) clntObj.get("number");
+            Long type = (Long) clntObj.get("type");
 
-        //Calculation
-        Double result = Math.pow(number,2);
+            //System.out.println(number );
+            //System.out.println(type );
 
-        //Martialing
-        JSONObject resultobj = new JSONObject();
-        resultobj.put("calculation", new String("Square"));
-        resultobj.put("result", result);
+            //Calculation
+            Double result = Math.pow(number,2);
 
-        //System.out.println(resultobj);
+            //Martialing
+            JSONObject resultobj = new JSONObject();
+            resultobj.put("calculation", new String("Square"));
+            resultobj.put("result", result);
 
-        //Sending the data to client
-        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
-        String resultdata = resultobj.toJSONString();
-        System.out.println(resultdata);
-        out.println(resultdata);
+            //System.out.println(resultobj);
+
+            //Sending the data to client
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
+            String resultdata = resultobj.toJSONString();
+            System.out.println(resultdata);
+            out.println(resultdata);
+
+        }catch (IOException e){
+
+            System.out.println(e);
+            System.out.println("Starting the Square server 1 is failed.");
+        }
+
+
+
 
 
 
