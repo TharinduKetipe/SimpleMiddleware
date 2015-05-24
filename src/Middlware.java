@@ -15,6 +15,19 @@ public class Middlware {
 
     public static void main(String[] args) throws IOException {
 
+        //Making the server registry
+        JSONObject registryobj = new JSONObject();
+        registryobj.put("square1" , new Integer(8081));
+        registryobj.put("square2", new Integer(8082));
+        registryobj.put("root1" , new Integer(8091));
+        registryobj.put("root2", new Integer(8092));
+
+        //System.out.println(registryobj.get("square1"));
+        //System.out.println(registryobj.get("square2"));
+        //System.out.println(registryobj.get("root1"));
+        //System.out.println(registryobj.get("root2"));
+
+
 
         try {
 
@@ -55,7 +68,7 @@ public class Middlware {
 
                     //Creating the connection with the server
                     System.err.println(InetAddress.getLocalHost());
-                    Socket clientSocketsq1 = new Socket("127.0.0.1",8081);
+                    Socket clientSocketsq1 = new Socket("127.0.0.1", (Integer) registryobj.get("square1"));
 
                     //Sending the data via tcp socket
                     String jsondatasq1 = clntObj.toJSONString();
@@ -92,6 +105,7 @@ public class Middlware {
 
                         System.out.println(e);
                         System.out.println("Sending answer to the client is failed.");
+
                     }
 
 
@@ -99,7 +113,62 @@ public class Middlware {
                 }catch (IOException e){
 
                     System.out.println(e);
-                    System.out.println("Connecting with the Square server 1 is failed.");
+                    System.out.println("Connecting with the Square server 1 is failed.\n trying to connect with the square server 2");
+
+                    try {
+
+                        //Creating the connection with the server
+                        System.err.println(InetAddress.getLocalHost());
+                        Socket clientSocketsq1 = new Socket("127.0.0.1", (Integer) registryobj.get("square2"));
+
+                        //Sending the data via tcp socket
+                        String jsondatasq1 = clntObj.toJSONString();
+                        PrintWriter outsq1 = new PrintWriter(clientSocketsq1.getOutputStream(),true);
+                        outsq1.println(jsondatasq1);
+                        System.out.println(jsondatasq1);
+
+                        //Get the result from the server
+                        BufferedReader insq1 = new BufferedReader(new InputStreamReader(clientSocketsq1.getInputStream()));
+                        JSONObject resultobjsq1 = (JSONObject) JSONValue.parse(insq1.readLine());
+                        System.out.println(resultobjsq1);
+
+                        //close the connection with the server
+                        outsq1.close();
+                        insq1.close();
+                        clientSocketsq1.close();
+
+                        try {
+
+                            //starting the connection with the client
+                            System.err.println(InetAddress.getLocalHost());
+                            Socket clientSocketsq1cl = new Socket("127.0.0.1",8010);
+
+                            //Sending the data to client
+                            PrintWriter outclntsq1 = new PrintWriter(clientSocketsq1cl.getOutputStream(),true);
+                            String resultdatasq1 = resultobjsq1.toJSONString();
+                            System.out.println(resultdatasq1);
+                            outclntsq1.println(resultdatasq1);
+
+                            outclntsq1.close();
+                            clientSocketsq1cl.close();
+
+                        }catch (IOException e3){
+
+                            System.out.println(e3);
+                            System.out.println("Sending answer to the client is failed.");
+
+                        }
+
+
+                    }catch (IOException e1){
+
+                        System.out.println(e1);
+                        System.out.println("Connecting with tha Square server 2 is failed too.");
+                    }
+
+
+
+
                 }
 
 
@@ -110,7 +179,7 @@ public class Middlware {
 
                     //Creating the connection with the server
                     System.err.println(InetAddress.getLocalHost());
-                    Socket clientSocketsq1 = new Socket("127.0.0.1",8091);
+                    Socket clientSocketsq1 = new Socket("127.0.0.1", (Integer) registryobj.get("root1"));
 
                     //Sending the data via tcp socket
                     String jsondatasq1 = clntObj.toJSONString();
@@ -157,10 +226,68 @@ public class Middlware {
 
 
 
-                }catch (IOException e){
+                }catch (IOException e1){
 
-                    System.out.println(e);
-                    System.out.println("Connecting with the Root server 1 is failed.");
+                    System.out.println(e1);
+                    System.out.println("Connecting with the Root server 1 is failed.\n trying to connect with the root server 2");
+
+                    try {
+
+                        //Creating the connection with the server
+                        System.err.println(InetAddress.getLocalHost());
+                        Socket clientSocketsq1 = new Socket("127.0.0.1", (Integer) registryobj.get("root2"));
+
+                        //Sending the data via tcp socket
+                        String jsondatasq1 = clntObj.toJSONString();
+                        PrintWriter outsq1 = new PrintWriter(clientSocketsq1.getOutputStream(),true);
+                        outsq1.println(jsondatasq1);
+                        System.out.println(jsondatasq1);
+
+                        //Get the result from the server
+                        BufferedReader insq1 = new BufferedReader(new InputStreamReader(clientSocketsq1.getInputStream()));
+                        JSONObject resultobjsq1 = (JSONObject) JSONValue.parse(insq1.readLine());
+                        System.out.println(resultobjsq1);
+
+                        //close the connection with the server
+                        outsq1.close();
+                        insq1.close();
+                        clientSocketsq1.close();
+
+
+                        try {
+
+                            //starting the connection with the client
+                            System.err.println(InetAddress.getLocalHost());
+                            Socket clientSocketsq1cl = new Socket("127.0.0.1",8010);
+
+                            //Sending the data to client
+                            PrintWriter outclntsq1 = new PrintWriter(clientSocketsq1cl.getOutputStream(),true);
+                            String resultdatasq1 = resultobjsq1.toJSONString();
+                            System.out.println(resultdatasq1);
+                            outclntsq1.println(resultdatasq1);
+
+                            outclntsq1.close();
+                            clientSocketsq1cl.close();
+
+                        }catch (IOException e){
+
+
+                            System.out.println(e);
+                            System.out.println("Sending the answer to the client is failed.");
+                        }
+
+
+
+
+
+
+                    }catch (IOException e3){
+
+                        System.out.println(e3);
+                        System.out.println("Connecting to the root server 2 is failed too.");
+
+
+                    }
                 }
 
 

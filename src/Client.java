@@ -62,6 +62,9 @@ public class Client {
                        ServerSocket serverSocket = new ServerSocket(8010);
                        //System.out.println("SERVER IS LISTING TO PORT : 8010");
 
+                       //Set Connection time out
+                       serverSocket.setSoTimeout(1000);
+
                        //Accepting the client's request
 
                        Socket clientSocketm = serverSocket.accept();

@@ -21,8 +21,8 @@ public class SquareServer2 {
 
             //Creating the server Socket
 
-            ServerSocket serverSocket = new ServerSocket(8081);
-            System.out.println("SERVER IS LISTING TO PORT : 8081");
+            ServerSocket serverSocket = new ServerSocket(8082);
+            System.out.println("SERVER IS LISTING TO PORT : 8082");
 
             //Accepting the client's request
 
