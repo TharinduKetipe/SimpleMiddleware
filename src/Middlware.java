@@ -15,122 +15,168 @@ public class Middlware {
 
     public static void main(String[] args) throws IOException {
 
-        //Connecting with the client
-        ServerSocket serverSocketmc1 = new ServerSocket(8000);
-        System.out.println("SERVER IS LISTING TO PORT : 8000");
 
-        //Accepting the client's request
+        try {
 
-        Socket clientSocketmc1 = serverSocketmc1.accept();
-        System.out.println("NOW CLIENT IS CONNECTED. ");
+            //Connecting with the client
+            ServerSocket serverSocketmc1 = new ServerSocket(8000);
+            System.out.println("SERVER IS LISTING TO PORT : 8000");
 
-        //Reading the recieved data
+            //Accepting the client's request
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocketmc1.getInputStream()));
-        JSONObject clntObj = (JSONObject) JSONValue.parse(in.readLine());
-        System.out.println(clntObj);
-        //String client = in.readLine();
-        // System.out.println(client);
+            Socket clientSocketmc1 = serverSocketmc1.accept();
+            System.out.println("NOW CLIENT IS CONNECTED. ");
 
-        //Unmartial the data
-        Double number = (Double) clntObj.get("number");
-        Long type = (Long) clntObj.get("type");
+            //Reading the recieved data
 
-        //System.out.println(number );
-        //System.out.println(type );
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocketmc1.getInputStream()));
+            JSONObject clntObj = (JSONObject) JSONValue.parse(in.readLine());
+            System.out.println(clntObj);
+            //String client = in.readLine();
+            // System.out.println(client);
 
-        //close the connection
-        in.close();
-        clientSocketmc1.close();
-        serverSocketmc1.close();
+            //Unmartial the data
+            Double number = (Double) clntObj.get("number");
+            Long type = (Long) clntObj.get("type");
 
-        //Routing to the correct server
+            //System.out.println(number );
+            //System.out.println(type );
 
-        if (type==1){
+            //close the connection
+            in.close();
+            clientSocketmc1.close();
+            serverSocketmc1.close();
 
-            //Creating the connection with the server
-            System.err.println(InetAddress.getLocalHost());
-            Socket clientSocketsq1 = new Socket("127.0.0.1",8081);
+            //Routing to the correct server
 
-            //Sending the data via tcp socket
-            String jsondatasq1 = clntObj.toJSONString();
-            PrintWriter outsq1 = new PrintWriter(clientSocketsq1.getOutputStream(),true);
-            outsq1.println(jsondatasq1);
-            System.out.println(jsondatasq1);
+            if (type==1){
 
-            //Get the result from the server
-            BufferedReader insq1 = new BufferedReader(new InputStreamReader(clientSocketsq1.getInputStream()));
-            JSONObject resultobjsq1 = (JSONObject) JSONValue.parse(insq1.readLine());
-            System.out.println(resultobjsq1);
+                try {
 
-            //close the connection with the server
-            outsq1.close();
-            insq1.close();
-            clientSocketsq1.close();
+                    //Creating the connection with the server
+                    System.err.println(InetAddress.getLocalHost());
+                    Socket clientSocketsq1 = new Socket("127.0.0.1",8081);
 
-            //starting the connection with the client
-            System.err.println(InetAddress.getLocalHost());
-            Socket clientSocketsq1cl = new Socket("127.0.0.1",8010);
+                    //Sending the data via tcp socket
+                    String jsondatasq1 = clntObj.toJSONString();
+                    PrintWriter outsq1 = new PrintWriter(clientSocketsq1.getOutputStream(),true);
+                    outsq1.println(jsondatasq1);
+                    System.out.println(jsondatasq1);
 
+                    //Get the result from the server
+                    BufferedReader insq1 = new BufferedReader(new InputStreamReader(clientSocketsq1.getInputStream()));
+                    JSONObject resultobjsq1 = (JSONObject) JSONValue.parse(insq1.readLine());
+                    System.out.println(resultobjsq1);
 
+                    //close the connection with the server
+                    outsq1.close();
+                    insq1.close();
+                    clientSocketsq1.close();
 
+                    try {
 
+                        //starting the connection with the client
+                        System.err.println(InetAddress.getLocalHost());
+                        Socket clientSocketsq1cl = new Socket("127.0.0.1",8010);
 
-            //Sending the data to client
-            PrintWriter outclntsq1 = new PrintWriter(clientSocketsq1cl.getOutputStream(),true);
-            String resultdatasq1 = resultobjsq1.toJSONString();
-            System.out.println(resultdatasq1);
-            outclntsq1.println(resultdatasq1);
+                        //Sending the data to client
+                        PrintWriter outclntsq1 = new PrintWriter(clientSocketsq1cl.getOutputStream(),true);
+                        String resultdatasq1 = resultobjsq1.toJSONString();
+                        System.out.println(resultdatasq1);
+                        outclntsq1.println(resultdatasq1);
 
-            outclntsq1.close();
-            clientSocketsq1cl.close();
+                        outclntsq1.close();
+                        clientSocketsq1cl.close();
 
-        }else {
+                    }catch (IOException e){
 
-
-            //Creating the connection with the server
-            System.err.println(InetAddress.getLocalHost());
-            Socket clientSocketsq1 = new Socket("127.0.0.1",8091);
-
-            //Sending the data via tcp socket
-            String jsondatasq1 = clntObj.toJSONString();
-            PrintWriter outsq1 = new PrintWriter(clientSocketsq1.getOutputStream(),true);
-            outsq1.println(jsondatasq1);
-            System.out.println(jsondatasq1);
-
-            //Get the result from the server
-            BufferedReader insq1 = new BufferedReader(new InputStreamReader(clientSocketsq1.getInputStream()));
-            JSONObject resultobjsq1 = (JSONObject) JSONValue.parse(insq1.readLine());
-            System.out.println(resultobjsq1);
-
-            //close the connection with the server
-            outsq1.close();
-            insq1.close();
-            clientSocketsq1.close();
-
-            //starting the connection with the client
-            System.err.println(InetAddress.getLocalHost());
-            Socket clientSocketsq1cl = new Socket("127.0.0.1",8010);
+                        System.out.println(e);
+                        System.out.println("Sending answer to the client is failed.");
+                    }
 
 
 
+                }catch (IOException e){
 
-
-            //Sending the data to client
-            PrintWriter outclntsq1 = new PrintWriter(clientSocketsq1cl.getOutputStream(),true);
-            String resultdatasq1 = resultobjsq1.toJSONString();
-            System.out.println(resultdatasq1);
-            outclntsq1.println(resultdatasq1);
-
-            outclntsq1.close();
-            clientSocketsq1cl.close();
+                    System.out.println(e);
+                    System.out.println("Connecting with the Square server 1 is failed.");
+                }
 
 
 
+            }else {
+
+                try {
+
+                    //Creating the connection with the server
+                    System.err.println(InetAddress.getLocalHost());
+                    Socket clientSocketsq1 = new Socket("127.0.0.1",8091);
+
+                    //Sending the data via tcp socket
+                    String jsondatasq1 = clntObj.toJSONString();
+                    PrintWriter outsq1 = new PrintWriter(clientSocketsq1.getOutputStream(),true);
+                    outsq1.println(jsondatasq1);
+                    System.out.println(jsondatasq1);
+
+                    //Get the result from the server
+                    BufferedReader insq1 = new BufferedReader(new InputStreamReader(clientSocketsq1.getInputStream()));
+                    JSONObject resultobjsq1 = (JSONObject) JSONValue.parse(insq1.readLine());
+                    System.out.println(resultobjsq1);
+
+                    //close the connection with the server
+                    outsq1.close();
+                    insq1.close();
+                    clientSocketsq1.close();
+
+
+                    try {
+
+                        //starting the connection with the client
+                        System.err.println(InetAddress.getLocalHost());
+                        Socket clientSocketsq1cl = new Socket("127.0.0.1",8010);
+
+                        //Sending the data to client
+                        PrintWriter outclntsq1 = new PrintWriter(clientSocketsq1cl.getOutputStream(),true);
+                        String resultdatasq1 = resultobjsq1.toJSONString();
+                        System.out.println(resultdatasq1);
+                        outclntsq1.println(resultdatasq1);
+
+                        outclntsq1.close();
+                        clientSocketsq1cl.close();
+
+                    }catch (IOException e){
+
+
+                        System.out.println(e);
+                        System.out.println("Sending the answer to the client is failed.");
+                    }
 
 
 
+
+
+
+
+                }catch (IOException e){
+
+                    System.out.println(e);
+                    System.out.println("Connecting with the Root server 1 is failed.");
+                }
+
+
+
+
+
+
+            }
+
+        }catch (IOException e){
+
+            System.out.println(e);
+            System.out.println("Connecting with the client is failed.");
         }
+
+
     }
 
 
