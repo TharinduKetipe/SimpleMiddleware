@@ -14,60 +14,61 @@ public class RootServer1 {
 
     public static void main(String[] args) throws IOException {
 
-
-        try {
-
-            //Creating the server Socket
-
-            ServerSocket serverSocket = new ServerSocket(8091);
-            System.out.println("SERVER IS LISTING TO PORT : 8091");
-
-            //Accepting the client's request
-
-            Socket clientSocket = serverSocket.accept();
-            System.out.println("NOW CLIENT IS CONNECTED. ");
-
-            //Reading the recieved data
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            JSONObject clntObj = (JSONObject) JSONValue.parse(in.readLine());
-            System.out.println(clntObj);
-            //String client = in.readLine();
-            // System.out.println(client);
-
-            //Unmartial the data
-            Double number = (Double) clntObj.get("number");
-            Long type = (Long) clntObj.get("type");
-
-            //System.out.println(number );
-            //System.out.println(type );
-
-            //Calculation
-            Double result = Math.sqrt(number);
-
-            //Martialing
-            JSONObject resultobj = new JSONObject();
-            resultobj.put("calculation", new String("Squareroot"));
-            resultobj.put("result", result);
-
-            //System.out.println(resultobj);
-
-            //Sending the data to client
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),true);
-            String resultdata = resultobj.toJSONString();
-            System.out.println(resultdata);
-            out.println(resultdata);
+        while (true) {
 
 
-        }catch (IOException e){
+            try {
 
-            System.out.println(e);
-            System.out.println("Starting the Root server 1 is failed.");
+                //Creating the server Socket
+
+                ServerSocket serverSocket = new ServerSocket(8091);
+                System.out.println("SERVER IS LISTING TO PORT : 8091");
+
+                //Accepting the client's request
+
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("NOW CLIENT IS CONNECTED. ");
+
+                //Reading the recieved data
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                JSONObject clntObj = (JSONObject) JSONValue.parse(in.readLine());
+                System.out.println(clntObj);
+                //String client = in.readLine();
+                // System.out.println(client);
+
+                //Unmartial the data
+                Double number = (Double) clntObj.get("number");
+                Long type = (Long) clntObj.get("type");
+
+                //System.out.println(number );
+                //System.out.println(type );
+
+                //Calculation
+                Double result = Math.sqrt(number);
+
+                //Martialing
+                JSONObject resultobj = new JSONObject();
+                resultobj.put("calculation", new String("Squareroot"));
+                resultobj.put("result", result);
+
+                //System.out.println(resultobj);
+
+                //Sending the data to client
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                String resultdata = resultobj.toJSONString();
+                System.out.println(resultdata);
+                out.println(resultdata);
+
+
+            } catch (IOException e) {
+
+                System.out.println(e);
+                System.out.println("Starting the Root server 1 is failed.");
+            }
+
+
         }
-
-
-
-
 
     }
 }
